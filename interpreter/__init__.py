@@ -1,4 +1,4 @@
-from .ex3 import Interpreter
+from .ex4 import Interpreter
 
 def main():
     while True:
