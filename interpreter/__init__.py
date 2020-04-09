@@ -1,9 +1,9 @@
-from .ex6 import Interpreter
+from .ex7 import Interpreter, Lexer, Parser
 
 def main():
     while True:
         try:
-            text = input('calc> ')
+            text = input('spi> ')
         except EOFError:
             print("EOF Detected")
             break
@@ -11,6 +11,8 @@ def main():
         if not text:
             continue
 
-        interpreter = Interpreter(text)
-        result = interpreter.expr()
+        lexer = Lexer(text)
+        parser = Parser(lexer)
+        interpreter = Interpreter(parser)
+        result = interpreter.interpret()
         print(result)
