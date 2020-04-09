@@ -2,7 +2,10 @@ import unittest
 from .ln_translator_tests import LNTranslatorTests
 from .rpn_translator_tests import RPNTranslatorTests
 
-test_cases = (LNTranslatorTests, RPNTranslatorTests)
+test_cases = (
+        LNTranslatorTests,
+        RPNTranslatorTests
+        )
 
 def main():
     suite = unittest.TestSuite()
