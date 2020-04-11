@@ -1,10 +1,12 @@
 import unittest
 from .ln_translator_tests import LNTranslatorTests
 from .rpn_translator_tests import RPNTranslatorTests
+from .integration_tests import IntegrationTests
 
 test_cases = (
         LNTranslatorTests,
-        RPNTranslatorTests
+        RPNTranslatorTests,
+        IntegrationTests
         )
 
 def main():

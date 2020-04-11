@@ -1,4 +1,4 @@
-from .ex7 import Interpreter, Lexer, Parser
+from .ex8 import Interpreter, Lexer, Parser
 
 def main():
     while True:
