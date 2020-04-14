@@ -2,11 +2,13 @@ import unittest
 from .ln_translator_tests import LNTranslatorTests
 from .rpn_translator_tests import RPNTranslatorTests
 from .integration_tests import IntegrationTests
+from .lexer_tests import LexerTests
 
 test_cases = (
         LNTranslatorTests,
         RPNTranslatorTests,
-        IntegrationTests
+        IntegrationTests,
+        LexerTests
         )
 
 def main():
