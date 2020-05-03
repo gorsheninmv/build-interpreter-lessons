@@ -1,5 +1,5 @@
 import unittest
-from interpreter import Lexer, Parser, Interpreter
+from interpreter import Lexer, Parser, Interpreter, SymbolTableBuilder
 
 def interpret(text):
     lexer = Lexer(text)
@@ -27,3 +27,40 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(get_var_value('a'), 2)
         self.assertEqual(get_var_value('b'), 25)
         self.assertEqual(format(get_var_value('y'), '.2f'), str(5.64))
+
+    def test_throws_exceptions_when_var_not_declared(self):
+        program_code = r'''
+        PROGRAM NameError1;
+        VAR
+            a : INTEGER;
+
+        BEGIN
+            a := 2 + b;
+        END.
+        '''
+
+        lexer = Lexer(program_code)
+        parser = Parser(lexer)
+        tree = parser.parse()
+        symtab_builder = SymbolTableBuilder()
+        with self.assertRaises(NameError) as context:
+            symtab_builder.visit(tree)
+
+    def test_throws_exceptions_when_var_not_declared_2(self):
+        program_code = r'''
+        PROGRAM NameError2;
+        VAR
+            b : INTEGER;
+
+        BEGIN
+            b := 1;
+            a := b + 2;
+        END.
+        '''
+
+        lexer = Lexer(program_code)
+        parser = Parser(lexer)
+        tree = parser.parse()
+        symtab_builder = SymbolTableBuilder()
+        with self.assertRaises(NameError) as context:
+            symtab_builder.visit(tree)
