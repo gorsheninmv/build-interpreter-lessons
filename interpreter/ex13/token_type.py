@@ -1,0 +1,31 @@
+from enum import Enum, auto
+
+class TokenType(Enum):
+    """ Token types """
+
+    NUL = auto()
+    INTEGER = auto()
+    PLUS = auto()
+    MINUS = auto()
+    MUL = auto()
+    DIV = auto()
+    LP = auto()
+    RP = auto()
+    PROGRAM = auto()
+    VAR = auto()
+    REAL = auto()
+    DOT = auto()
+    BEGIN = auto()
+    END = auto()
+    ID = auto()
+    ASSIGN = auto()
+    SEMI = auto()
+    COMMA = auto()
+    INTEGER_DIV = auto()
+    FLOAT_DIV = auto()
+    INTEGER_CONST = auto()
+    REAL_CONST = auto()
+    PROCEDURE = auto()
+    COLON = auto()
+    EOF = auto()
+    INF = auto()

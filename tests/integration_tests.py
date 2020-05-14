@@ -1,5 +1,5 @@
 import unittest
-from interpreter import Lexer, Parser, Interpreter, SymbolTableBuilder
+from interpreter import Lexer, Parser, Interpreter, SemanticAnalyzer
 
 def interpret(text):
     lexer = Lexer(text)
@@ -42,9 +42,9 @@ class IntegrationTests(unittest.TestCase):
         lexer = Lexer(program_code)
         parser = Parser(lexer)
         tree = parser.parse()
-        symtab_builder = SymbolTableBuilder()
-        with self.assertRaises(NameError) as context:
-            symtab_builder.visit(tree)
+        semantic_analyzer = SemanticAnalyzer()
+        with self.assertRaises(Exception) as context:
+            semantic_analyzer.visit(tree)
 
     def test_throws_exceptions_when_var_not_declared_2(self):
         program_code = r'''
@@ -61,6 +61,25 @@ class IntegrationTests(unittest.TestCase):
         lexer = Lexer(program_code)
         parser = Parser(lexer)
         tree = parser.parse()
-        symtab_builder = SymbolTableBuilder()
-        with self.assertRaises(NameError) as context:
-            symtab_builder.visit(tree)
+        semantic_analyzer = SemanticAnalyzer()
+        with self.assertRaises(Exception) as context:
+            semantic_analyzer.visit(tree)
+
+    def test_throws_exceptions_when_duplicate_declaration(self):
+        print('run test')
+        program_code = r'''
+        PROGRAM NameError2;
+            VAR a, b : INTEGER;
+            VAR b : REAL;
+
+        BEGIN
+            a := a + b;
+        END.
+        '''
+
+        lexer = Lexer(program_code)
+        parser = Parser(lexer)
+        tree = parser.parse()
+        semantic_analyzer = SemanticAnalyzer()
+        with self.assertRaises(Exception) as context:
+            semantic_analyzer.visit(tree)

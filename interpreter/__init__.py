@@ -1,1 +1,1 @@
-from .ex11 import Interpreter, Lexer, Parser, SymbolTableBuilder
+from .ex13 import Interpreter, Lexer, Parser, SemanticAnalyzer
