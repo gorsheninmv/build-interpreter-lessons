@@ -1,14 +1,18 @@
 import unittest
-from interpreter import Lexer, Parser, Interpreter, SemanticAnalyzer
+from interpreter import Lexer, Parser, Interpreter, SemanticAnalyzer, enable_log
 
 def interpret(text):
     lexer = Lexer(text)
     parser = Parser(lexer)
-    interpreter = Interpreter(parser)
+    tree = parser.parse()
+    interpreter = Interpreter(tree)
     interpreter.interpret()
     return interpreter.get_var_value
 
 class IntegrationTests(unittest.TestCase):
+    def setUp(self):
+        enable_log()
+
     def test_1(self):
         program_code = r'''
         PROGRAM Part10AST;
@@ -81,5 +85,93 @@ class IntegrationTests(unittest.TestCase):
         parser = Parser(lexer)
         tree = parser.parse()
         semantic_analyzer = SemanticAnalyzer()
+        with self.assertRaises(Exception) as context:
+            semantic_analyzer.visit(tree)
+
+    def test_output_1(self):
+        program_code = r'''
+        PROGRAM Part10;
+        VAR
+           number     : INTEGER;
+           a, b, c, x : INTEGER;
+           y          : REAL;
+        
+        BEGIN {Part10}
+           BEGIN
+              number := 2;
+              a := number;
+              b := 10 * a + 10 * number DIV 4;
+              c := a - - b
+           END;
+           x := 11;
+           y := 20 / 7 + 3.14;
+           { writeln('a = ', a); }
+           { writeln('b = ', b); }
+           { writeln('c = ', c); }
+           { writeln('number = ', number); }
+           { writeln('x = ', x); }
+           { writeln('y = ', y); }
+        END.  {Part10}
+        '''
+
+        lexer = Lexer(program_code)
+        parser = Parser(lexer)
+        tree = parser.parse()
+        semantic_analyzer = SemanticAnalyzer()
+        semantic_analyzer.visit(tree)
+        interpreter = Interpreter(tree)
+        interpreter.interpret()
+        print(interpreter.get_var_value('a'))
+        print(interpreter.get_var_value('b'))
+        print(interpreter.get_var_value('c'))
+        print(interpreter.get_var_value('number'))
+        print(interpreter.get_var_value('x'))
+        print(interpreter.get_var_value('y'))
+
+    def test_proc_call(self):
+        program_code = r'''
+        program Main;
+
+        procedure Alpha(a : integer; b : integer);
+        var x : integer;
+        begin
+           x := (a + b ) * 2;
+        end;
+
+        begin { Main }
+
+           Alpha(3 + 5, 7);  { procedure call }
+
+        end.  { Main }
+        '''
+        lexer = Lexer(program_code)
+        parser = Parser(lexer)
+        tree = parser.parse()
+        semantic_analyzer = SemanticAnalyzer()
+        semantic_analyzer.visit(tree)
+        interpreter = Interpreter(tree)
+        interpreter.interpret()
+
+    def test_proc_call_throws_error_when_params_count_mismatch(self):
+        program_code = r'''
+        program Main;
+
+        procedure Alpha(a : integer; b : integer);
+        var x : integer;
+        begin
+           x := (a + b ) * 2;
+        end;
+
+        begin { Main }
+
+           Alpha(7);  { procedure call }
+
+        end.  { Main }
+        '''
+        lexer = Lexer(program_code)
+        parser = Parser(lexer)
+        tree = parser.parse()
+        semantic_analyzer = SemanticAnalyzer()
+
         with self.assertRaises(Exception) as context:
             semantic_analyzer.visit(tree)

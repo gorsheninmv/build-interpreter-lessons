@@ -1,1 +1,1 @@
-from .ex13 import Interpreter, Lexer, Parser, SemanticAnalyzer
+from .ex16 import Interpreter, Lexer, Parser, SemanticAnalyzer, enable_log
