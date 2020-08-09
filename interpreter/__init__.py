@@ -1,1 +1,1 @@
-from .ex17 import Interpreter, Lexer, Parser, SemanticAnalyzer, enable_log, main
+from .ex19 import Interpreter, Lexer, Parser, SemanticAnalyzer, enable_log, main
